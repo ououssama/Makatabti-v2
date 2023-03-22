@@ -2,7 +2,7 @@ import { faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "@inertiajs/inertia-react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 // import logo from "../../../storage/app/public/logo.png";
 // Style for header components
 const HeaderContainer = styled.header`
@@ -60,6 +60,17 @@ const Button = styled.button`
         css`
             font-size: 18px;
         `};
+    ${(props) =>
+        props.signup &&
+        css`
+            border: white solid 2px;
+            color: white;
+            background: transparent;
+            margin-right: -10px;
+            &:hover {
+                background-color: transparent;
+            }
+        `}
 `;
 
 //  style for searchbar
@@ -210,7 +221,7 @@ function Header() {
                     gap: "15px",
                 }}
             >
-                <img src='logo.png' width="50px" height="40px" alt="logo" />
+                <img src="logo.png" width="50px" height="40px" alt="logo" />
                 <Logo>مكتبتي</Logo>
             </Link>
             <SearchBar
@@ -250,6 +261,12 @@ function Header() {
                 </SearchButton>
                 <Link style={{ textDecoration: "none" }} href="/login">
                     <Button>تسجيل الدخول</Button>
+                </Link>
+                <Link
+                    style={{ textDecoration: "none" }}
+                    href="register"
+                >
+                    <Button signup>حساب جديد</Button>
                 </Link>
             </div>
         </HeaderContainer>

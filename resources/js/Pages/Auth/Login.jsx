@@ -1,97 +1,176 @@
-import { useEffect } from 'react';
-import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 
-export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
-        remember: false,
-    });
+const Container = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 100vh;
+  direction: rtl;
+  background: url("./Database/kindle_ebook.jpg"), #73a580;
+  background-blend-mode: multiply;
+  objectFit: cover;
+  @media only screen and (max-width: 992px){
+    background-blend-mode: overlay;
+    justify-content: center;
+  }
+`;
 
-    useEffect(() => {
-        return () => {
-            reset('password');
-        };
-    }, []);
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  text-align: start;
+  border-radius: 10px;
+  padding: 3em 4em 6em;
+  width: 100%;
+  background-color: white;
+  height: 100%;
+  box-sizing: border-box;
+  @media only screen and (min-width: 600px){
+    height: max-content;
+    width: 60%;
+  }
+  @media only screen and (min-width: 786px){
+    height: max-content;
+    width: 50%;
+  }
+  @media only screen and (min-width: 992px){
+    border-radius: 10px 0 0 10px;
+    height: 100%;
+    width: 50%;
+  }
+`;
+const H1 = styled.h1`
+  font-size: 64px;
+  color: #73a580;
+  margin: 0 0 12px;
+`;
 
-    const submit = (e) => {
-        e.preventDefault();
+const InputContainer = styled.div`
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  width:100%;
+  max-width: 360px;
+  min-width: 250px;
+`
+const Label = styled.label`
+  font-size: 18px;
+  color: #73a580;
+  text-align: start;
+`;
 
-        post(route('login'));
-    };
+const Input = styled.input`
+  color: black;
+  font-size: 18px;
+  direction: rtl;
+  border: none;
+  // height: 20px;
+  width: 100%;
+  padding: 15px;
+  background-color: #c5c39294;
+  border-radius: 5px;
+  box-sizing: border-box;
+  // padding-left: 30px;
+  &:focus,
+  &:hover,
+  &:active {
+    outline: none;
+  }
+`;
 
-    return (
-        <GuestLayout>
-            <Head title="Log in" />
+const SubmitBtn = styled.input`
+  margin-top: 30px;
+  font-size: 19px;
+  height: 60px;
+    width:100%;
+  max-width:360px;
+  min-width:250px;
+  color: white;
+  background-color: rgb(244, 247, 247);
+  border-radius: 5px;
+  text-align: center;
+  border: none;
+  background-color: #3e5945;
+  &:hover {
+    cursor: pointer;
+    background-color: #1b261e;
+  }
+`;
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+export default function Login() {
+  const [userName, setUserName] = useState("");
+  const [pass, setPass] = useState("");
+  const [userAuth, setUserAuth] = useState(true);
+  const [passAuth, setPassAuth] = useState(true);
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+  // this function get called directly after the user has fill the form with the valid data by he redirect him to page that meet his account type
+  const handleForm = (e) => {
+    e.preventDefault();
+    if (adminUser.username === userName && adminUser.pass === pass) {
+      bridge("/admin");
+    } else if (regularUser.username === userName && regularUser.pass === pass) {
+      bridge("/user")
+    } else {
+      console.log("invalid user");
+    }
+  };
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
+  // check if the user given data matches the stored accounts information and throw a descriptif message for the false data
+  const handlerTest = () => {
+    if (userName === regularUser.username) {
+      setUserAuth(true);
+      if (pass === regularUser.pass) {
+        setPassAuth(true);
+      } else {
+        setPassAuth(false)
+      }
+    } else if (userName === adminUser.username) {
+      setUserAuth(true);
+      if (pass === adminUser.pass) {
+        setPassAuth(true);
+      } else {
+        setPassAuth(false)
+      }
+    } else {
+      setUserAuth(false);
+    }
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+  }
+  return (
+    <>
+      <Container>
+        <Form action='' onSubmit={(e) => handleForm(e)}>
+          <H1>مكتبتي</H1>
+          <InputContainer>
+            {" "}
+            <Label>اسم المستخدم</Label>
+            <Input
+              type='text'
+              id='name'
+              onChange={(e) => setUserName(e.target.value)}
+            /><span style={{ display: userAuth ? 'none' : 'block', backgroundColor: 'orangered', color: 'white', borderRadius: '5px', padding: '12px' }}><FontAwesomeIcon icon={faCircleExclamation} style={{ marginLeft: '7px' }} /><p style={{ display: 'inline' }}>اسم المستخدم خطا المرجو المحاولة مرة اخرى</p></span>
+          </InputContainer>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+          <InputContainer>
+            <Label>الرمز السري</Label>
+            <Input
+              type='password'
+              id='password'
+              onChange={(e) => setPass(e.target.value)}
+            />
+            <span style={{ display: passAuth ? 'none' : 'block', backgroundColor: 'orangered', color: 'white', borderRadius: '5px', padding: '12px' }}><FontAwesomeIcon icon={faCircleExclamation} style={{ marginLeft: '7px' }} /><p style={{ display: 'inline' }}>الرقم السري خطا المرجو المحاولة مرة اخرى</p></span>
+          </InputContainer>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
+          <SubmitBtn type='submit' value="تسجيل الدخول" onClick={handlerTest} />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.checked)}
-                        />
-                        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
-                    </label>
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ml-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
-    );
+        </Form>
+      </Container>
+    </>
+  );
 }
