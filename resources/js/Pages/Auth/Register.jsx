@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Inertia } from "@inertiajs/inertia";
+import { useForm } from "@inertiajs/inertia-react";
+import { Link } from "@inertiajs/react";
 
 const Container = styled.div`
     display: flex;
@@ -106,23 +108,26 @@ const SubmitBtn = styled.input`
 
 export default function Register() {
     const [submission, setSubmission] = useState({
-        username: '',
-        email: '',
-        password: ''
-    })
+        username: "",
+        email: "",
+        password: "",
+    });
+
+    const { errors } = useForm(submission);
     // const [userAuth, setUserAuth] = useState(true);
     // const [passAuth, setPassAuth] = useState(true);
 
     const handelChange = (e) => {
-        setSubmission(submission => ({
-            ...submission, [e.target.id] : e.target.value
-        }))
-    }
+        setSubmission((submission) => ({
+            ...submission,
+            [e.target.id]: e.target.value,
+        }));
+    };
 
     // this function get called directly after the user has fill the form with the valid data by he redirect him to page that meet his account type
     const handleForm = (e) => {
         e.preventDefault();
-        Inertia.post('register', submission)
+        Inertia.post("register", submission);
     };
 
     return (
@@ -138,6 +143,7 @@ export default function Register() {
                             id="username"
                             onChange={handelChange}
                         />
+                        {errors.username && <div>{errors.username}</div>}
                         {/* <span
                             style={{
                                 // display: userAuth ? "none" : "block",
@@ -165,6 +171,7 @@ export default function Register() {
                             id="email"
                             onChange={handelChange}
                         />
+                        {errors.email && <div>{errors.email}</div>}
                         {/* <span
                             style={{
                                 // display: userAuth ? "none" : "block",
@@ -236,10 +243,8 @@ export default function Register() {
                         </span> */}
                     </InputContainer>
 
-                    <SubmitBtn
-                        type="submit"
-                        value="تسجيل الدخول"
-                    />
+                    <SubmitBtn type="submit" value="تسجيل الدخول" />
+                    <p>لديك حساب؟ <Link href="/login" style={{color:'#73a580'}}>سجل الدخول</Link></p>
                 </Form>
             </Container>
         </>

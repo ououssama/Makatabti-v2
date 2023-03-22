@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,29 +34,29 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         info('registred');
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required',
+        $validator = Validator::make($request->all(), [
+            'username' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required'],
         ]);
 
-        // $user = User::create([
-        //     'name' => $request->username,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        // ]);
+        if ($validator->fails()) {
+            return redirect('/register')
+                ->withErrors($validator);
+        } else {
 
 
-        DB::table('users')->insert([
-            'name' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            DB::table('users')->insert([
+                'name' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        // event(new Registered($user));
+            // event(new Registered($user));
 
-        // Auth::login($user);
+            // Auth::login($user);
 
-        return redirect('/login');
+            return redirect('/login');
+        }
     }
 }
