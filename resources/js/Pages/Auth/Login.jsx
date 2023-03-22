@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "@inertiajs/react";
+import { Inertia } from "@inertiajs/inertia";
+import { useForm } from "@inertiajs/inertia-react";
 
 const Container = styled.div`
     display: flex;
@@ -104,25 +106,32 @@ const SubmitBtn = styled.input`
     }
 `;
 
-export default function Login() {
-    const [userName, setUserName] = useState("");
-    const [pass, setPass] = useState("");
+export default function Login({errors}) {
+    const [submission, setSubmission] = useState({
+        email: '',
+        password: ''
+    })
     // const [userAuth, setUserAuth] = useState(true);
-    // const [passAuth, setPassAuth] = useState(true);
+    // const [passAuth, setPassAuth] = useState(true);ù
+
+    const handelChange = (e) => {
+        setSubmission(submission => ({...submission, [e.target.id]: e.target.value}))
+    }
 
     // this function get called directly after the user has fill the form with the valid data by he redirect him to page that meet his account type
     const handleForm = (e) => {
         e.preventDefault();
-        if (adminUser.username === userName && adminUser.pass === pass) {
-            bridge("/admin");
-        } else if (
-            regularUser.username === userName &&
-            regularUser.pass === pass
-        ) {
-            bridge("/user");
-        } else {
-            console.log("invalid user");
-        }
+        Inertia.post('login/auth', submission)
+        // if (adminUser.username === userName && adminUser.pass === pass) {
+        //     bridge("/admin");
+        // } else if (
+        //     regularUser.username === userName &&
+        //     regularUser.pass === pass
+        // ) {
+        //     bridge("/user");
+        // } else {
+        //     console.log("invalid user");
+        // }
     };
 
 
@@ -135,13 +144,13 @@ export default function Login() {
                         {" "}
                         <Label>اسم المستخدم</Label>
                         <Input
-                            type="text"
-                            id="name"
-                            onChange={(e) => setUserName(e.target.value)}
+                            type="email"
+                            id="email"
+                            onChange={handelChange}
                         />
-                        {/* <span
+                        <span
                             style={{
-                                display: userAuth ? "none" : "block",
+                                display: !errors.email ? "none" : "block",
                                 backgroundColor: "orangered",
                                 color: "white",
                                 borderRadius: "5px",
@@ -155,7 +164,7 @@ export default function Login() {
                             <p style={{ display: "inline" }}>
                                 اسم المستخدم خطا المرجو المحاولة مرة اخرى
                             </p>
-                        </span> */}
+                        </span>
                     </InputContainer>
 
                     <InputContainer>
@@ -163,11 +172,11 @@ export default function Login() {
                         <Input
                             type="password"
                             id="password"
-                            onChange={(e) => setPass(e.target.value)}
+                            onChange={handelChange}
                         />
-                        {/* <span
+                        <span
                             style={{
-                                display: passAuth ? "none" : "block",
+                                display: !errors.password ? "none" : "block",
                                 backgroundColor: "orangered",
                                 color: "white",
                                 borderRadius: "5px",
@@ -181,13 +190,12 @@ export default function Login() {
                             <p style={{ display: "inline" }}>
                                 الرقم السري خطا المرجو المحاولة مرة اخرى
                             </p>
-                        </span> */}
+                        </span>
                     </InputContainer>
 
                     <SubmitBtn
                         type="submit"
                         value="تسجيل الدخول"
-                        onClick={handlerTest}
                     />
                     <p style={{marginTop:'20px'}}>
                         ليس لديك حساب بعد؟{" "}

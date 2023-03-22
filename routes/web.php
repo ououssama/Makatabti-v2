@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -34,11 +35,12 @@ Route::redirect('/', 'Home');
 
 Route::get('/Home', function(){
     return Inertia::render('Home');
-});
+})->name('home');
 
-Route::get('/login', function(){
-    return Inertia::render('Auth/Login');
-});
+Route::get('/login', [LoginController::class, 'index']);
+Route::post('/login/auth', [LoginController::class, 'authenticate'])->name('login.auth');
+
+
 
 // Route::controller('register', RegisteredUserController::class);
 // Route::post('/submit', );
@@ -53,4 +55,4 @@ Route::get('/login', function(){
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
