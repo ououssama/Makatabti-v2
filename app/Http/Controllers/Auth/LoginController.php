@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 class LoginController extends Controller
 {
-    public function index(){
+    public function create(){
         return Inertia::render('Auth/Login');
     }
 
@@ -26,7 +26,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             info('logged!');
-            return redirect('/Home');
+            return redirect('/User/Home');
         }
 
         return back()->withErrors([

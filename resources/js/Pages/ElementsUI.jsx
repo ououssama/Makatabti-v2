@@ -1,7 +1,7 @@
 import { faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, usePage } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "@inertiajs/inertia-react";
 import styled, { css } from "styled-components";
 // import logo from "../../../storage/app/public/logo.png";
 // Style for header components
@@ -169,6 +169,9 @@ function Header() {
     // const [menuToggel, setMenuToggel] = useState(false);
     const insideButton = useRef();
 
+    const { url } = usePage();
+    console.log(url);
+
     useEffect(() => {
         window.onclick = (e) => {
             // check if user has clicked in the add button
@@ -250,25 +253,58 @@ function Header() {
                     <span style={{ opacity: ".5" }}>محتوى غير متوفر</span>
                 </SerachResulte>
             </SearchBar>
-            <div style={{ display: "flex", alignItems: "center", gap: "25px" }}>
-                <SearchButton>
-                    <FontAwesomeIcon
-                        ref={SearchOpen}
-                        style={{ padding: "10px", fontSize: "18px" }}
-                        icon={faSearch}
-                        color="white"
-                    />
-                </SearchButton>
-                <Link style={{ textDecoration: "none" }} href="/login">
-                    <Button>تسجيل الدخول</Button>
-                </Link>
-                <Link
-                    style={{ textDecoration: "none" }}
-                    href="register"
+            {url.startsWith("/User") ? (
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                    }}
                 >
-                    <Button signup>حساب جديد</Button>
-                </Link>
-            </div>
+                    <p style={{ color: "white", fontWeight: "500" }}>
+                        المستعمل
+                    </p>
+                    <div
+                        style={{
+                            backgroundColor: "white",
+                            width: "35px",
+                            height: "35px",
+                            borderRadius: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faUser} color="#4EAA4B" />
+                    </div>
+                    <Link style={{ textDecoration: "none" }} href="/Logout">
+                        <Button>تسجيل الخروج</Button>
+                    </Link>
+                </div>
+            ) : (
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "25px",
+                    }}
+                >
+                    <SearchButton>
+                        <FontAwesomeIcon
+                            ref={SearchOpen}
+                            style={{ padding: "10px", fontSize: "18px" }}
+                            icon={faSearch}
+                            color="white"
+                        />
+                    </SearchButton>
+                    <Link style={{ textDecoration: "none" }} href="/Login">
+                        <Button>تسجيل الدخول</Button>
+                    </Link>
+                    <Link style={{ textDecoration: "none" }} href="/Register">
+                        <Button signup>حساب جديد</Button>
+                    </Link>
+                </div>
+            )}
         </HeaderContainer>
     );
 }

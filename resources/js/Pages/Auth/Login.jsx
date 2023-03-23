@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
-import { useForm } from "@inertiajs/inertia-react";
+import { Link, useForm } from "@inertiajs/react";
 
 const Container = styled.div`
     display: flex;
@@ -106,22 +104,27 @@ const SubmitBtn = styled.input`
     }
 `;
 
-export default function Login({errors}) {
-    const [submission, setSubmission] = useState({
+export default function Login() {
+    // const [submission, setSubmission] = useState({
+    //     email: '',
+    //     password: ''
+    // })
+
+    const { data, setData, post, errors } = useForm({
         email: '',
         password: ''
-    })
+    });
     // const [userAuth, setUserAuth] = useState(true);
     // const [passAuth, setPassAuth] = useState(true);ù
 
-    const handelChange = (e) => {
-        setSubmission(submission => ({...submission, [e.target.id]: e.target.value}))
-    }
+    // const handelChange = (e) => {
+    //     setSubmission(submission => ({...submission, [e.target.id]: e.target.value}))
+    // }
 
     // this function get called directly after the user has fill the form with the valid data by he redirect him to page that meet his account type
     const handleForm = (e) => {
         e.preventDefault();
-        Inertia.post('login/auth', submission)
+        post('Login', data)
         // if (adminUser.username === userName && adminUser.pass === pass) {
         //     bridge("/admin");
         // } else if (
@@ -146,7 +149,7 @@ export default function Login({errors}) {
                         <Input
                             type="email"
                             id="email"
-                            onChange={handelChange}
+                            onChange={e => setData('email', e.target.value)}
                         />
                         <span
                             style={{
@@ -172,7 +175,7 @@ export default function Login({errors}) {
                         <Input
                             type="password"
                             id="password"
-                            onChange={handelChange}
+                            onChange={e => setData('password', e.target.value)}
                         />
                         <span
                             style={{
@@ -199,7 +202,7 @@ export default function Login({errors}) {
                     />
                     <p style={{marginTop:'20px'}}>
                         ليس لديك حساب بعد؟{" "}
-                        <Link href="/register" style={{ color: "#73a580" }}>
+                        <Link href="/Register" style={{ color: "#73a580" }}>
                             إنشء حساب
                         </Link>
                     </p>

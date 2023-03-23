@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/register')
+            return redirect('/Register')
                 ->withErrors($validator);
         } else {
 
@@ -56,7 +56,7 @@ class RegisteredUserController extends Controller
 
             // Auth::login($user);
 
-            return redirect('/login');
+            return redirect('/Login');
         }
     }
 }

@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+use function Termwind\render;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +41,19 @@ Route::get('/Home', function(){
     return Inertia::render('Home');
 })->name('home');
 
-Route::get('/login', [LoginController::class, 'index']);
-Route::post('/login/auth', [LoginController::class, 'authenticate'])->name('login.auth');
+Route::get('/Login', [LoginController::class, 'create'])->name('login');
+Route::post('/Login', [LoginController::class, 'authenticate']);
 
+Route::get('/Register', [RegisteredUserController::class, 'create']);
+Route::post('/Register', [RegisteredUserController::class, 'store']);
 
+Route::middleware('auth')->group(function(){
+    Route::get('/User/Home', function(){
+        return Inertia::render('Home');
+    });
+
+    Route::get('/Logout', [AuthenticatedSessionController::class, 'destroy']);
+});
 
 // Route::controller('register', RegisteredUserController::class);
 // Route::post('/submit', );

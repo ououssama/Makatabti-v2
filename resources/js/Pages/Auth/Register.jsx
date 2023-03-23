@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { Inertia } from "@inertiajs/inertia";
-import { useForm } from "@inertiajs/inertia-react";
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 
 const Container = styled.div`
     display: flex;
@@ -75,7 +73,7 @@ const Input = styled.input`
     border: none;
     // height: 20px;
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     background-color: #c5c39294;
     border-radius: 5px;
     box-sizing: border-box;
@@ -107,27 +105,19 @@ const SubmitBtn = styled.input`
 `;
 
 export default function Register() {
-    const [submission, setSubmission] = useState({
+
+    const { data, setData, post, errors } = useForm({
         username: "",
         email: "",
         password: "",
     });
-
-    const { errors } = useForm(submission);
     // const [userAuth, setUserAuth] = useState(true);
     // const [passAuth, setPassAuth] = useState(true);
-
-    const handelChange = (e) => {
-        setSubmission((submission) => ({
-            ...submission,
-            [e.target.id]: e.target.value,
-        }));
-    };
 
     // this function get called directly after the user has fill the form with the valid data by he redirect him to page that meet his account type
     const handleForm = (e) => {
         e.preventDefault();
-        Inertia.post("register", submission);
+        post("Register", data);
     };
 
     return (
@@ -141,26 +131,30 @@ export default function Register() {
                         <Input
                             type="text"
                             id="username"
-                            onChange={handelChange}
+                            onChange={(e) =>
+                                setData("username", e.target.value)
+                            }
                         />
-                        {errors.username && <div>{errors.username}</div>}
-                        {/* <span
-                            style={{
-                                // display: userAuth ? "none" : "block",
-                                backgroundColor: "orangered",
-                                color: "white",
-                                borderRadius: "5px",
-                                padding: "12px",
-                            }}
-                        >
-                            <FontAwesomeIcon
-                                icon={faCircleExclamation}
-                                style={{ marginLeft: "7px" }}
-                            />
-                            <p style={{ display: "inline" }}>
-                                اسم المستخدم خطا المرجو المحاولة مرة اخرى
-                            </p>
-                        </span> */}
+                        {errors.username && (
+                            <span
+                                style={{
+                                    // display: userAuth ? "none" : "block",
+                                    backgroundColor: "orangered",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                    padding: "10px",
+                                    fontSize: "14px"
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faCircleExclamation}
+                                    style={{ marginLeft: "7px" }}
+                                />
+                                <p style={{ display: "inline" }}>
+                                    اسم المستخدم خطا المرجو المحاولة مرة اخرى
+                                </p>
+                            </span>
+                        )}
                     </InputContainer>
 
                     <InputContainer>
@@ -169,26 +163,28 @@ export default function Register() {
                         <Input
                             type="email"
                             id="email"
-                            onChange={handelChange}
+                            onChange={(e) => setData("email", e.target.value)}
                         />
-                        {errors.email && <div>{errors.email}</div>}
-                        {/* <span
-                            style={{
-                                // display: userAuth ? "none" : "block",
-                                backgroundColor: "orangered",
-                                color: "white",
-                                borderRadius: "5px",
-                                padding: "12px",
-                            }}
-                        >
-                            <FontAwesomeIcon
-                                icon={faCircleExclamation}
-                                style={{ marginLeft: "7px" }}
-                            />
-                            <p style={{ display: "inline" }}>
-                                اسم المستخدم خطا المرجو المحاولة مرة اخرى
-                            </p>
-                        </span> */}
+                        {errors.email && (
+                            <span
+                                style={{
+                                    // display: userAuth ? "none" : "block",
+                                    backgroundColor: "orangered",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                    padding: "10px",
+                                    fontSize: "14px"
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faCircleExclamation}
+                                    style={{ marginLeft: "7px" }}
+                                />
+                                <p style={{ display: "inline" }}>
+                                    اسم المستخدم خطا المرجو المحاولة مرة اخرى
+                                </p>
+                            </span>
+                        )}
                     </InputContainer>
 
                     <InputContainer>
@@ -196,25 +192,32 @@ export default function Register() {
                         <Input
                             type="password"
                             id="password"
-                            onChange={handelChange}
+                            onChange={(e) =>
+                                setData("password", e.target.value)
+                            }
                         />
-                        {/* <span
-                            style={{
-                                // display: passAuth ? "none" : "block",
-                                backgroundColor: "orangered",
-                                color: "white",
-                                borderRadius: "5px",
-                                padding: "12px",
-                            }}
-                        >
-                            <FontAwesomeIcon
-                                icon={faCircleExclamation}
-                                style={{ marginLeft: "7px" }}
-                            />
-                            <p style={{ display: "inline" }}>
-                                الرقم السري خطا المرجو المحاولة مرة اخرى
-                            </p>
-                        </span> */}
+
+                        {
+                            errors.password &&
+                            <span
+                                style={{
+                                    // display: passAuth ? "none" : "block",
+                                    backgroundColor: "orangered",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                    padding: "10px",
+                                    fontSize: "14px"
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faCircleExclamation}
+                                    style={{ marginLeft: "7px" }}
+                                />
+                                <p style={{ display: "inline" }}>
+                                    الرقم السري خطا المرجو المحاولة مرة اخرى
+                                </p>
+                            </span>
+                        }
                     </InputContainer>
 
                     <InputContainer>
@@ -244,7 +247,12 @@ export default function Register() {
                     </InputContainer>
 
                     <SubmitBtn type="submit" value="تسجيل الدخول" />
-                    <p>لديك حساب؟ <Link href="/login" style={{color:'#73a580'}}>سجل الدخول</Link></p>
+                    <p>
+                        لديك حساب؟{" "}
+                        <Link href="/Login" style={{ color: "#73a580" }}>
+                            سجل الدخول
+                        </Link>
+                    </p>
                 </Form>
             </Container>
         </>
