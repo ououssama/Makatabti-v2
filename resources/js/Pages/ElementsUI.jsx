@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, usePage } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-// import logo from "../../../storage/app/public/logo.png";
+
 // Style for header components
 const HeaderContainer = styled.header`
     display: flex;
@@ -16,6 +16,7 @@ const HeaderContainer = styled.header`
     background-color: #8acb88;
     gap: 4em;
     position: relative;
+    flex: 1;
 `;
 
 const Logo = styled.p`
@@ -84,7 +85,7 @@ const SearchBar = styled.div`
         display: "none";
         position: absolute;
         width: 100%;
-        // min-width: 100%;
+        max-width: 100%;
         padding: 0 15px;
         right: 0;
         box-sizing: border-box;
@@ -158,6 +159,40 @@ const SearchButton = styled.div`
     }
 `;
 
+// Style for footer components
+const FooterContainer = styled.footer`
+    bottom: auto;
+    width: 100%;
+    display: flex;
+    row-gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    box-sizing: border-box;
+    padding: 30px 50px;
+    align-items: center;
+    background-color: #1b261e;
+    @media only screen and (max-width: 600px) {
+        flex-direction: column;
+    }
+`;
+
+const Nav = styled.span`
+    margin: 5px;
+    padding: 5px 14px;
+    color: white;
+    font-size: 15px;
+    display: inline-block;
+    &:hover {
+        background-color: #418e3e;
+        border-radius: 10px;
+    }
+`;
+
+const Copyright = styled.p`
+    color: white;
+    text-align: center;
+`;
+
 function Header() {
     const [searchQuery, setSearchQuery] = useState();
     const SearchOpen = useRef();
@@ -216,7 +251,9 @@ function Header() {
     return (
         <HeaderContainer>
             <Link
-                href="/"
+                href={
+                    url.startsWith("/User") ? route("home.user") : route("home")
+                }
                 style={{
                     textDecoration: "none",
                     display: "flex",
@@ -224,7 +261,7 @@ function Header() {
                     gap: "15px",
                 }}
             >
-                <img src="logo.png" width="50px" height="40px" alt="logo" />
+                <img src="/logo.png" width="50px" height="40px" alt="logo" />
                 <Logo>مكتبتي</Logo>
             </Link>
             <SearchBar
@@ -236,17 +273,7 @@ function Header() {
                     type="search"
                     placeholder="البحت"
                 />
-                <FontAwesomeIcon
-                    style={{
-                        position: "absolute",
-                        right: "20px",
-                        fontSize: "20px",
-                        top: "50%",
-                        translate: "0 -50%",
-                    }}
-                    icon={faSearch}
-                    color="white"
-                />
+                <FontAwesomeIcon className="searchbar-icon" icon={faSearch} color="white" />
                 <SerachResulte
                     style={{ display: listVisiblity ? "block" : "none" }}
                 >
@@ -254,32 +281,18 @@ function Header() {
                 </SerachResulte>
             </SearchBar>
             {url.startsWith("/User") ? (
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                    }}
-                >
-                    <p style={{ color: "white", fontWeight: "500" }}>
-                        المستعمل
-                    </p>
-                    <div
-                        style={{
-                            backgroundColor: "white",
-                            width: "35px",
-                            height: "35px",
-                            borderRadius: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faUser} color="#4EAA4B" />
+                <div className="profile">
+                    <div className="profile-identity">
+                        <p>المستعمل</p>
+                        <div className="profile-image">
+                            <FontAwesomeIcon icon={faUser} color="#4EAA4B" />
+                        </div>
                     </div>
-                    <Link style={{ textDecoration: "none" }} href="/Logout">
-                        <Button>تسجيل الخروج</Button>
-                    </Link>
+                    <div className="profile-logout">
+                        <Link style={{ textDecoration: "none" }} href="/Logout">
+                            <Button>تسجيل الخروج</Button>
+                        </Link>
+                    </div>
                 </div>
             ) : (
                 <div
@@ -310,7 +323,27 @@ function Header() {
 }
 
 function Footer() {
-    return <h1>footer</h1>;
+    return (
+        <FooterContainer>
+            <div>
+                <Logo>مكتبتي</Logo>
+            </div>
+            <div>
+                <Link href="/Books">
+                    <Nav>الكتب</Nav>
+                </Link>
+                <Link href="/Videos">
+                    <Nav>الفديوهات</Nav>
+                </Link>
+                <Link href="/Audios">
+                    <Nav>أوديو</Nav>
+                </Link>
+            </div>
+            <div>
+                <Copyright>© جميع الحقوق محفوظة لموقع مكتبتي</Copyright>
+            </div>
+        </FooterContainer>
+    );
 }
 
 export { Header, Footer };

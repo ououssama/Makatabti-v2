@@ -36,8 +36,10 @@ use function Termwind\render;
 // });
 
 Route::redirect('/', 'Home');
+Route::redirect('/register', '/Register');
+Route::redirect('/login', '/Login');
 
-Route::get('/Home', function(){
+Route::get('/Home', function () {
     return Inertia::render('Home');
 })->name('home');
 
@@ -47,12 +49,14 @@ Route::post('/Login', [LoginController::class, 'authenticate']);
 Route::get('/Register', [RegisteredUserController::class, 'create']);
 Route::post('/Register', [RegisteredUserController::class, 'store']);
 
-Route::middleware('auth')->group(function(){
-    Route::get('/User/Home', function(){
-        return Inertia::render('Home');
-    });
+Route::middleware('auth')->group(function () {
 
+    Route::get('/User/Home', function () {
+        return Inertia::render('Home');
+    })->name('home.user');
+    
     Route::get('/Logout', [AuthenticatedSessionController::class, 'destroy']);
+
 });
 
 // Route::controller('register', RegisteredUserController::class);

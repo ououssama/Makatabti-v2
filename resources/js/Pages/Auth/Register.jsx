@@ -6,46 +6,29 @@ import { Link, useForm } from "@inertiajs/react";
 
 const Container = styled.div`
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     direction: rtl;
-    background: url("./Database/kindle_ebook.jpg"), #73a580;
-    background-blend-mode: multiply;
+    background-color: #73a580;
     objectfit: cover;
-    @media only screen and (max-width: 992px) {
-        background-blend-mode: overlay;
-        justify-content: center;
-    }
 `;
 
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     gap: 15px;
     text-align: start;
-    border-radius: 10px;
-    padding: 3em 4em 6em;
+    padding: 3em 5em 6em;
     width: 100%;
     background-color: white;
     height: 100%;
+    overflow-y: hidden;
+    margin: 0px;
     box-sizing: border-box;
-    @media only screen and (min-width: 600px) {
-        height: max-content;
-        width: calc(60% + 20px);
-    }
-    @media only screen and (min-width: 786px) {
-        height: max-content;
-        width: 50%;
-    }
-    @media only screen and (min-width: 992px) {
-        border-radius: 10px 0 0 10px;
-        height: 100%;
-        width: 50%;
-    }
 `;
+
 const H1 = styled.h1`
     font-size: 64px;
     color: #73a580;
@@ -71,13 +54,11 @@ const Input = styled.input`
     font-size: 18px;
     direction: rtl;
     border: none;
-    // height: 20px;
     width: 100%;
     padding: 10px;
     background-color: #c5c39294;
     border-radius: 5px;
     box-sizing: border-box;
-    // padding-left: 30px;
     &:focus,
     &:hover,
     &:active {
@@ -97,7 +78,7 @@ const SubmitBtn = styled.input`
     text-align: center;
     border: none;
     background-color: #3e5945;
-    padding: 20px;
+    padding: 15px;
     &:hover {
         cursor: pointer;
         background-color: #1b261e;
@@ -105,7 +86,6 @@ const SubmitBtn = styled.input`
 `;
 
 export default function Register() {
-
     const { data, setData, post, errors } = useForm({
         username: "",
         email: "",
@@ -143,7 +123,7 @@ export default function Register() {
                                     color: "white",
                                     borderRadius: "5px",
                                     padding: "10px",
-                                    fontSize: "14px"
+                                    fontSize: "14px",
                                 }}
                             >
                                 <FontAwesomeIcon
@@ -173,7 +153,7 @@ export default function Register() {
                                     color: "white",
                                     borderRadius: "5px",
                                     padding: "10px",
-                                    fontSize: "14px"
+                                    fontSize: "14px",
                                 }}
                             >
                                 <FontAwesomeIcon
@@ -197,8 +177,7 @@ export default function Register() {
                             }
                         />
 
-                        {
-                            errors.password &&
+                        {errors.password && (
                             <span
                                 style={{
                                     // display: passAuth ? "none" : "block",
@@ -206,7 +185,7 @@ export default function Register() {
                                     color: "white",
                                     borderRadius: "5px",
                                     padding: "10px",
-                                    fontSize: "14px"
+                                    fontSize: "14px",
                                 }}
                             >
                                 <FontAwesomeIcon
@@ -217,7 +196,7 @@ export default function Register() {
                                     الرقم السري خطا المرجو المحاولة مرة اخرى
                                 </p>
                             </span>
-                        }
+                        )}
                     </InputContainer>
 
                     <InputContainer>

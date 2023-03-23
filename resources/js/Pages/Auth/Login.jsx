@@ -6,46 +6,30 @@ import { Link, useForm } from "@inertiajs/react";
 
 const Container = styled.div`
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     direction: rtl;
-    background: url("./Database/kindle_ebook.jpg"), #73a580;
-    background-blend-mode: multiply;
+    background-color: #73a580;
     objectfit: cover;
-    @media only screen and (max-width: 992px) {
-        background-blend-mode: overlay;
-        justify-content: center;
-    }
 `;
 
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 15px;
     text-align: start;
-    border-radius: 10px;
-    padding: 2em 4em 3em;
+    padding: 3em 5em 6em;
     width: 100%;
     background-color: white;
-    height: 100%;
+    height: 100vh;
+    overflow-y: hidden;
+    margin: 0px;
     box-sizing: border-box;
-    @media only screen and (min-width: 600px) {
-        height: max-content;
-        width: 60%;
-    }
-    @media only screen and (min-width: 786px) {
-        height: max-content;
-        width: 50%;
-    }
-    @media only screen and (min-width: 992px) {
-        border-radius: 10px 0 0 10px;
-        height: 100%;
-        width: 50%;
-    }
 `;
+
 const H1 = styled.h1`
     font-size: 64px;
     color: #73a580;
@@ -71,13 +55,11 @@ const Input = styled.input`
     font-size: 18px;
     direction: rtl;
     border: none;
-    // height: 20px;
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     background-color: #c5c39294;
     border-radius: 5px;
     box-sizing: border-box;
-    // padding-left: 30px;
     &:focus,
     &:hover,
     &:active {
@@ -88,7 +70,6 @@ const Input = styled.input`
 const SubmitBtn = styled.input`
     margin-top: 30px;
     font-size: 19px;
-    height: 60px;
     width: 100%;
     max-width: 360px;
     min-width: 250px;
@@ -98,6 +79,7 @@ const SubmitBtn = styled.input`
     text-align: center;
     border: none;
     background-color: #3e5945;
+    padding: 15px;
     &:hover {
         cursor: pointer;
         background-color: #1b261e;
